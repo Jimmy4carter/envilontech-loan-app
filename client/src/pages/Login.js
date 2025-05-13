@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { TextField, Button, Paper, Typography } from '@mui/material'; // Updated Material-UI import
+import { TextField, Button, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+// Use the environment variable for the backend URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Replaces useHistory
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       alert('Login successful!');
       navigate('/'); // Redirect to the landing page or admin dashboard
