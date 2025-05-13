@@ -17,8 +17,11 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
-
+app.use(cors({
+  origin: 'https://envilontech-frontend.onrender.com', // Replace with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 // Connect to the database and ensure admin user is created on startup
 connectDB().then(() => {
   createAdminUser(); // Ensure admin user is created after DB connection is established
