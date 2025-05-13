@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const Users = () => {
   const [users, setUsers] = useState([]);
 
@@ -9,7 +11,7 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/admin/users', {
+        const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

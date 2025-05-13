@@ -7,6 +7,8 @@ import axios from 'axios';
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
 
@@ -14,7 +16,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/admin/stats', {
+        const response = await axios.get(`${API_BASE_URL}/api/admin/stats`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

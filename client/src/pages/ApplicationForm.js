@@ -28,12 +28,13 @@ const ApplicationForm = () => {
     'Sterling Bank', 'Polaris Bank', 'Wema Bank', 'Unity Bank',
     'Heritage Bank', 'Keystone Bank', 'Jaiz Bank'
   ];
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token'); // Get the token from localStorage
-      await axios.post('/api/loans', formData, {
+      await axios.post(`${API_BASE_URL}/api/loans`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         },
