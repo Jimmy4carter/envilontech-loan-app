@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/envilontech-loans
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRES_IN=90d
+      - TZ=Africa/Lagos
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./server:/app/server
+      - ./client:/app/client
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - TZ=Africa/Lagos
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  admin:
+    build:
+      context: ./client
+      dockerfile: ../Dockerfile.admin
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://app:5000/api
+      - TZ=Africa/Lagos
+    depends_on:
+      - app
+
+volumes:
+  mongo-data:
